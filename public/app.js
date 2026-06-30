@@ -29,6 +29,7 @@ const els = {
   updatedAt: document.querySelector('#updatedAt'),
   regionFilter: document.querySelector('#regionFilter'),
   storeFilter: document.querySelector('#storeFilter'),
+  keywordInput: document.querySelector('#keywordInput'),
   metricSelect: document.querySelector('#metricSelect'),
   directionSelect: document.querySelector('#directionSelect'),
   minSoldInput: document.querySelector('#minSoldInput'),
@@ -208,6 +209,7 @@ function renderStores() {
 function filteredProducts() {
   const region = els.regionFilter.value;
   const storeId = els.storeFilter.value;
+  const keyword = els.keywordInput.value.trim().toLowerCase();
   const minSold = Number(els.minSoldInput.value);
   const minGrowth = Number(els.minGrowthInput.value);
   const useMinSold = Number.isFinite(minSold) && els.minSoldInput.value !== '';
@@ -216,6 +218,11 @@ function filteredProducts() {
   return state.dashboard.products
     .filter((item) => region === 'all' || item.region === region)
     .filter((item) => storeId === 'all' || item.storeId === storeId)
+    .filter((item) => {
+      if (!keyword) return true;
+      return [item.title, item.productId, item.storeName, item.sellerId, item.region]
+        .some((value) => String(value || '').toLowerCase().includes(keyword));
+    })
     .filter((item) => !useMinSold || (item.currentSold ?? 0) >= minSold)
     .filter((item) => !useMinGrowth || (item[state.metric] ?? -Infinity) >= minGrowth)
     .sort((a, b) => {
@@ -230,7 +237,7 @@ function renderProducts() {
   els.tableTitle.textContent = `${metricLabels[state.metric]}排序`;
   els.productRows.innerHTML = rows.length ? rows.map((item) => `
     <tr>
-      <td>
+      <td data-label="商品">
         <div class="product">
           <div class="thumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="" />` : '无图'}</div>
           <div>
@@ -240,13 +247,13 @@ function renderProducts() {
           </div>
         </div>
       </td>
-      <td>${escapeHtml(item.storeName)}<span class="muted">${escapeHtml(item.region)}</span></td>
-      <td>${fmt(item.currentSold)}</td>
-      <td class="growth">${fmt(item.d1)}</td>
-      <td>${fmt(item.d3)}</td>
-      <td>${fmt(item.d7)}</td>
-      <td>${fmt(item.d10)}</td>
-      <td>${escapeHtml(item.price || '-')}<span class="muted">GMV ${fmt(item.revenue)}</span></td>
+      <td data-label="店铺">${escapeHtml(item.storeName)}<span class="muted">${escapeHtml(item.region)}</span></td>
+      <td data-label="当前销量">${fmt(item.currentSold)}</td>
+      <td data-label="昨日" class="growth">${fmt(item.d1)}</td>
+      <td data-label="3 日">${fmt(item.d3)}</td>
+      <td data-label="7 日">${fmt(item.d7)}</td>
+      <td data-label="10 日">${fmt(item.d10)}</td>
+      <td data-label="价格/GMV">${escapeHtml(item.price || '-')}<span class="muted">GMV ${fmt(item.revenue)}</span></td>
     </tr>
   `).join('') : `
     <tr>
@@ -286,7 +293,7 @@ els.directionSelect.addEventListener('change', () => {
   renderProducts();
 });
 ['change', 'input'].forEach((eventName) => {
-  [els.regionFilter, els.storeFilter, els.minSoldInput, els.minGrowthInput].forEach((el) => el.addEventListener(eventName, renderProducts));
+  [els.regionFilter, els.storeFilter, els.keywordInput, els.minSoldInput, els.minGrowthInput].forEach((el) => el.addEventListener(eventName, renderProducts));
 });
 
 els.addStoreForm.addEventListener('submit', addStore);
