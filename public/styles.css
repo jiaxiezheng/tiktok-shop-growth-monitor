@@ -194,7 +194,7 @@ textarea {
 
 .filters {
   display: grid;
-  grid-template-columns: repeat(6, minmax(130px, 1fr));
+  grid-template-columns: repeat(7, minmax(130px, 1fr));
   gap: 12px;
   padding: 16px;
   margin-bottom: 22px;
@@ -386,5 +386,131 @@ a {
   .layout,
   .add-form {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .shell {
+    width: min(100% - 20px, 1880px);
+    padding: 22px 0;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .topbar {
+    gap: 16px;
+  }
+
+  .primary,
+  .dark,
+  .secondary,
+  .danger,
+  .tab {
+    width: 100%;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .tab {
+    padding: 0 10px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stats div {
+    padding: 16px;
+  }
+
+  .stats strong {
+    font-size: 26px;
+  }
+
+  .panel-head {
+    display: grid;
+    gap: 6px;
+    padding: 16px;
+  }
+
+  .store-card {
+    padding: 16px;
+  }
+
+  .store-top {
+    align-items: stretch;
+  }
+
+  .store-top .danger {
+    width: 76px;
+  }
+
+  .store-edit {
+    grid-template-columns: 1fr;
+  }
+
+  table,
+  thead,
+  tbody,
+  tr,
+  td {
+    display: block;
+  }
+
+  table {
+    min-width: 0;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 0;
+  }
+
+  td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  td:first-child {
+    display: block;
+  }
+
+  td:first-child::before {
+    display: none;
+  }
+
+  .product {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .thumb {
+    width: 72px;
+    height: 72px;
+  }
+
+  .import-actions {
+    display: grid;
   }
 }
