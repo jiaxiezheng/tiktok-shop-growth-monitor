@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TikTok Shop 店铺动销后台</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">TIKTOK SHOP GROWTH MONITOR</div>
+          <h1>TikTok Shop 店铺动销后台</h1>
+          <p id="statusText">独立新程序，不连接短视频后台数据。</p>
+        </div>
+        <button id="scanButton" class="primary">刷新采集</button>
+      </header>
+
+      <section class="stats">
+        <div><span>启用店铺</span><strong id="storeCount">0/0</strong></div>
+        <div><span>商品数</span><strong id="productCount">0</strong></div>
+        <div><span>快照数</span><strong id="snapshotCount">0</strong></div>
+        <div><span>自动采集</span><strong id="scanSlots">-</strong></div>
+      </section>
+
+      <section class="toolbar">
+        <div class="tabs">
+          <button class="tab active" data-metric="currentSold">当前销量</button>
+          <button class="tab" data-metric="d1">昨日动销</button>
+          <button class="tab" data-metric="d3">近 3 日</button>
+          <button class="tab" data-metric="d7">近 7 日</button>
+          <button class="tab" data-metric="d10">近 10 日</button>
+        </div>
+        <form id="addStoreForm" class="add-form">
+          <input id="storeUrlInput" placeholder="添加 TikTok Shop 店铺链接或 sellerId" />
+          <input id="storeOwnerInput" class="short" placeholder="添加人" />
+          <input id="storeNoteInput" class="short" placeholder="备注" />
+          <button class="dark">添加店铺</button>
+        </form>
+      </section>
+
+      <section class="filters">
+        <label>国家/地区<select id="regionFilter"></select></label>
+        <label>店铺<select id="storeFilter"></select></label>
+        <label>排序<select id="metricSelect"></select></label>
+        <label>方向<select id="directionSelect"><option value="desc">从高到低</option><option value="asc">从低到高</option></select></label>
+        <label>最低销量<input id="minSoldInput" type="number" placeholder="不限" /></label>
+        <label>最低增长<input id="minGrowthInput" type="number" placeholder="不限" /></label>
+      </section>
+
+      <section class="layout">
+        <aside class="panel">
+          <div class="panel-head">
+            <h2>店铺池</h2>
+            <span>按 sellerId 去重</span>
+          </div>
+          <div id="storeList" class="store-list"></div>
+        </aside>
+
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2 id="tableTitle">当前销量排序</h2>
+            <span id="updatedAt">-</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>商品</th>
+                  <th>店铺</th>
+                  <th>当前销量</th>
+                  <th>昨日</th>
+                  <th>3 日</th>
+                  <th>7 日</th>
+                  <th>10 日</th>
+                  <th>价格/GMV</th>
+                </tr>
+              </thead>
+              <tbody id="productRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel import-panel">
+        <div class="panel-head">
+          <h2>导入商品快照</h2>
+          <span>格式：sellerId,productId,title,sold,price,revenue,url,image</span>
+        </div>
+        <textarea id="importText" placeholder="7496203341237029489,product001,商品名称,1200,199,238800,https://...,https://..."></textarea>
+        <div class="import-actions">
+          <button id="importButton" class="secondary">导入快照</button>
+          <span id="importHint">如果后续拿到 TikTok Shop 商品接口，这块可以直接换成自动采集。</span>
+        </div>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
